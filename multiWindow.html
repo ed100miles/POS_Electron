@@ -9,14 +9,18 @@
 </head>
 
 <body>
-    <h1>Check multi-missions</h1>
-    <form id='form'>
-        <input type="file" id='upload_file' name='upload_file'>
-        <button type="submit">Check Missions</button>
-    </form>
-
-    <div id='dl_links'>
-
+    <div id='container'>
+        <div>
+            <h1>Check multi-missions</h1>
+        </div>
+        <br>
+        <div>
+            <form id='form'>
+                <input type="file" id='upload_file' name='upload_file'>
+                <button type="submit" class="btn btn-primary">Check Missions</button>
+            </form>
+        </div>
+        <div id='dl_links'></div>
     </div>
 
     <script>
@@ -33,7 +37,7 @@
 
         ipcRenderer.on('files_done', (e) => {
             console.log('files are done...')
-            dl_links.innerHTML = '<br><a href="bad.txt" download>Download Bad Missions</a><br><br><a href="good.txt" download>Download Good Missions</a>'
+            dl_links.innerHTML = '<a href="bad.txt" download>Download Bad Missions</a><br><br><a href="good.txt" download>Download Good Missions</a>'
         })
     </script>
 

@@ -1,0 +1,4 @@
+On shelf availability problem.
+
+[('On', 'IN'), ('shelf', 'NN'), ('availability', 'NN'), ('problem', 'NN'), ('.', '.')]
+

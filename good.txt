@@ -1,0 +1,24 @@
+I'm a hairy cat sitting on a fluffy mat.
+
+[('I', 'PRP'), ("'m", 'VBP'), ('a', 'DT'), ('hairy', 'JJ'), ('cat', 'NN'), ('sitting', 'VBG'), ('on', 'IN'), ('a', 'DT'), ('fluffy', 'JJ'), ('mat', 'NN'), ('.', '.')]
+
+The cat is ginger.
+
+[('The', 'DT'), ('cat', 'NN'), ('is', 'VBZ'), ('ginger', 'NN'), ('.', '.')]
+
+I've identified replenishment issue. I am going to increase the replenishment cycle for these products to increase shelf availability.
+
+[('I', 'PRP'), ("'ve", 'VBP'), ('identified', 'VBN'), ('replenishment', 'JJ'), ('issue', 'NN'), ('.', '.'), ('I', 'PRP'), ('am', 'VBP'), ('going', 'VBG'), ('to', 'TO'), ('increase', 'VB'), ('the', 'DT'), ('replenishment', 'JJ'), ('cycle', 'NN'), ('for', 'IN'), ('these', 'DT'), ('products', 'NNS'), ('to', 'TO'), ('increase', 'VB'), ('shelf', 'NN'), ('availability', 'NN'), ('.', '.')]
+
+My shop's not selling enough stuff.
+
+[('My', 'PRP$'), ('shop', 'NN'), ("'s", 'VBZ'), ('not', 'RB'), ('selling', 'VBG'), ('enough', 'JJ'), ('stuff', 'NN'), ('.', '.')]
+
+I need to sell more stuff.
+
+[('I', 'PRP'), ('need', 'VBP'), ('to', 'TO'), ('sell', 'VB'), ('more', 'JJR'), ('stuff', 'NN'), ('.', '.')]
+
+I'll sell more sausages by putting them with the bacon and eggs.
+
+[('I', 'PRP'), ("'ll", 'MD'), ('sell', 'VB'), ('more', 'JJR'), ('sausages', 'NNS'), ('by', 'IN'), ('putting', 'VBG'), ('them', 'PRP'), ('with', 'IN'), ('the', 'DT'), ('bacon', 'NN'), ('and', 'CC'), ('eggs', 'NNS'), ('.', '.')]
+
