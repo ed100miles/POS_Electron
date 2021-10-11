@@ -3,6 +3,7 @@ body {
 }
 h1 {
     padding-top: 5vh;
+    padding-bottom: 5vh;
     text-align: center;
     color: cornflowerblue;
 }

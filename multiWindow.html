@@ -20,7 +20,11 @@
                 <button type="submit" class="btn btn-primary">Check Missions</button>
             </form>
         </div>
-        <div id='dl_links'></div>
+        <br><br>
+        <div id='dl_links' style="display: none;">
+            <a href="file:///good.txt" class="btn btn-success" download>Download Good Missions</a>
+            <a href="file:///bad.txt" class="btn btn-danger" download>Download Bad Missions</a>
+        </div>
     </div>
 
     <script>
@@ -28,16 +32,18 @@
         const { ipcRenderer } = electron;
         const form = document.getElementById('form')
         const dl_links = document.getElementById('dl_links')
+
+        // Pass file path to main.js to be sent to pos.py
         form.addEventListener('submit', (e) => {
             e.preventDefault()
             const file = document.getElementById('upload_file').files[0].path
             console.log(file)
             ipcRenderer.send('file', file)
         })
-
+        // On signal from main.js, display btns to dl good+bad files
         ipcRenderer.on('files_done', (e) => {
             console.log('files are done...')
-            dl_links.innerHTML = '<a href="bad.txt" download>Download Bad Missions</a><br><br><a href="good.txt" download>Download Good Missions</a>'
+            dl_links.style.display = 'block'
         })
     </script>
 
