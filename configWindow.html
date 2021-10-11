@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+<link rel='stylesheet' href="configWindow.css">
+
+<head>
+    <title>Mission Configuration</title>
+</head>
+
+<body>
+    <h1>Mission Configuration</h1>
+    <form id='config-form'>
+
+        <button type="submit" class="btn btn-primary">Save Config</button>
+    </form>
+    <script>
+        let configJSON = {}
+        const electron = require('electron');
+        const fs = require('fs')
+        const { ipcRenderer } = electron;
+        const configForm = document.getElementById('config-form')
+        function saveConfig(e){
+            e.preventDefault()
+            fs.writeFile('pos_config.json', JSON.stringify(configJSON), function(err){
+                if(err) return console.log('error!')
+            })
+        }
+        configForm.addEventListener('submit', saveConfig)
+    </script>
+
+</body>
+
+</html>
+<!-- 
+{
+    "nouns": [
+        "NN",
+        "NNS",
+        "NNP",
+        "NNPS"
+    ],
+    "verbs": [
+        "VB",
+        "VGB",
+        "VBD",
+        "VBN",
+        "VBP",
+        "VBZ"
+    ],
+    "ignore_words": ["is"],
+    "save_pos_tags": false
+} -->

@@ -6,7 +6,8 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 const { PythonShell } = require('python-shell')
 
 let mainWindow;
-let addWindow;
+let multiWindow;
+let configWindow;
 
 //Listen for app to be ready
 app.on('ready', () => {
@@ -35,10 +36,10 @@ app.on('ready', () => {
   Menu.setApplicationMenu(mainMenu);
 });
 
-// Handle create add window
-function createAddWindow() {
+// Handle create multi mission window
+function createMultiWindow() {
   // Create new window
-  addWindow = new BrowserWindow({
+  multiWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -48,14 +49,38 @@ function createAddWindow() {
     title: 'Multi-Mission Check'
   });
   // load html into window
-  addWindow.loadURL(url.format({
+  multiWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'multiWindow.html'),
     protocol: 'file',
     slashes: true
   }));
   // Garbage collection
-  addWindow.on('close', function () {
-    addWindow = null;
+  multiWindow.on('close', function () {
+    multiWindow = null;
+  })
+}
+
+// Handle create mission config window
+function createConfigWindow() {
+  // Create new window
+  configWindow = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    width: 600,
+    height: 400,
+    title: 'Mission Configuration'
+  });
+  // load html into window
+  configWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'configWindow.html'),
+    protocol: 'file',
+    slashes: true
+  }));
+  // Garbage collection
+  configWindow.on('close', function () {
+    configWindow = null;
   })
 }
 
@@ -82,7 +107,7 @@ ipcMain.on('file', function (e, file) {
   pyshell.send(file)
   pyshell.on('message', function (message) {
     console.log(message)
-    addWindow.webContents.send('files_done', 123)
+    multiWindow.webContents.send('files_done')
   })
   pyshell.end(function (err, code, signal) {
     if (err) throw err;
@@ -90,7 +115,6 @@ ipcMain.on('file', function (e, file) {
     console.log('The exit signal was: ' + signal);
     console.log('finished');
   })
-
 })
 
 // Create menu template
@@ -102,7 +126,21 @@ const mainMenuTemplate = [
         label: 'Multi-Mission Window',
         accelerator: process.platform == 'darwin' ? 'Command+M' : 'Ctrl+M',
         click() {
-          createAddWindow()
+          createMultiWindow()
+        }
+      },
+      {
+        label:'Mission Configuration',
+        accelerator: process.platform == 'darwin' ? 'Command+K' : 'Ctrl+K',
+        click() {
+          createConfigWindow()
+        }
+      },
+      {
+        label: 'Dev Tools',
+        accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
         }
       },
       {
@@ -112,13 +150,6 @@ const mainMenuTemplate = [
           app.quit();
         }
       },
-      {
-        label: 'Dev Tools',
-        accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
-        click(item, focusedWindow) {
-          focusedWindow.toggleDevTools();
-        }
-      }
     ]
   }
 ]

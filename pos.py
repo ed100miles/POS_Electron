@@ -1,4 +1,5 @@
 import nltk
+import json
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('punkt')
@@ -6,13 +7,15 @@ nltk.download('averaged_perceptron_tagger')
 
 sent = input()
 
+with open('pos_config.json', 'r') as config_file:
+    config = json.load(config_file)
 
 good_missions = []
 bad_missions = []
 
 def check_sentence(sentence):
-    nouns = set(['NN', 'NNS', 'NNP', 'NNPS'])
-    verbs = set(['VB', 'VGB', 'VBD', 'VBN', 'VBP', 'VBZ'])
+    nouns = set(config['nouns'])
+    verbs = set(config['verbs'])
     pos_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
     pos_list = [x[1] for x in pos_tagged]
     
@@ -25,6 +28,7 @@ def check_sentence(sentence):
 
 
 check_sentence(sent)
+
 # with open(path_to_missions, 'r') as in_file:
 #     for line in in_file.readlines():
 #         check_sentence(line)

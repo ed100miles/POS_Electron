@@ -1,4 +1,5 @@
 import nltk
+import json
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('punkt')
@@ -9,19 +10,32 @@ path_to_missions = input()
 out_folder = ''
 # input('Enter the path to the file where you want good and bad missions logged. (eg /Users/Lewis/Documents/):\n')
 
+with open('pos_config.json', 'r') as config_file:
+    config = json.load(config_file)
+
 good_missions = []
 bad_missions = []
 
 def check_sentence(sentence):
-    nouns = set(['NN', 'NNS', 'NNP', 'NNPS'])
-    verbs = set(['VB', 'VGB', 'VBD', 'VBN', 'VBP', 'VBZ'])
+    nouns = set(config['nouns'])
+    verbs = set(config['verbs'])
+    ignore_words = config['ignore_words']
+    save_pos_tags = config['save_pos_tags']
     pos_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
-    pos_list = [x[1] for x in pos_tagged]
+    # build a list of pos tags from given sentence,
+    # unless a word in the sentence is in the ignore_words list
+    pos_list = [x[1] for x in pos_tagged if x[0] not in ignore_words]
     
     if len(nouns & set(pos_list)) > 0 and len(verbs & set(pos_list)) > 0:
-        good_missions.append(f'{sentence}\n{pos_tagged}\n\n')
+        if save_pos_tags:
+            good_missions.append(f'{sentence}\n{pos_tagged}\n\n')
+        else:
+            good_missions.append(f'{sentence}\n\n')
     else:
-        bad_missions.append(f'{sentence}\n{pos_tagged}\n\n')
+        if save_pos_tags:
+            bad_missions.append(f'{sentence}\n{pos_tagged}\n\n')
+        else:
+            bad_missions.append(f'{sentence}\n\n')
 
 with open(path_to_missions, 'r') as in_file:
     for line in in_file.readlines():
