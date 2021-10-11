@@ -16,8 +16,10 @@ bad_missions = []
 def check_sentence(sentence):
     nouns = set(config['nouns'])
     verbs = set(config['verbs'])
+    ignore_words = config['ignore_words']
+    ignore_words + [x.capitalize() for x in ignore_words]
     pos_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
-    pos_list = [x[1] for x in pos_tagged]
+    pos_list = [x[1] for x in pos_tagged if x[0] not in ignore_words]
     
     if len(nouns & set(pos_list)) > 0 and len(verbs & set(pos_list)) > 0:
         print('Good Mission!')
@@ -25,18 +27,4 @@ def check_sentence(sentence):
     else:
         print('Bad Mission')
         bad_missions.append(f'{sentence}\n{pos_tagged}\n\n')
-
-
 check_sentence(sent)
-
-# with open(path_to_missions, 'r') as in_file:
-#     for line in in_file.readlines():
-#         check_sentence(line)
-
-# with open(f'{out_folder}/good.txt', 'w') as good_out:
-#     for line in good_missions:
-#         good_out.write(line)
-
-# with open(f'{out_folder}/bad.txt', 'w') as bad_out:
-#     for line in bad_missions:
-#         bad_out.write(line)

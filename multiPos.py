@@ -16,11 +16,13 @@ with open('pos_config.json', 'r') as config_file:
 good_missions = []
 bad_missions = []
 
+#TODO: interpret verbs that can be nouns as verbs
+
 def check_sentence(sentence):
     nouns = set(config['nouns'])
     verbs = set(config['verbs'])
-    # TODO: add capitalised ignore words to list
     ignore_words = config['ignore_words']
+    ignore_words + [x.capitalize() for x in ignore_words]
     save_pos_tags = config['save_pos_tags']
     pos_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
     # build a list of pos tags from given sentence,

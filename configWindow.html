@@ -14,23 +14,23 @@
         <input class="form-check-input" type="checkbox" value="PTAG" id="PTAG">
         <label class="form-check-label" for="PTAG">Add part of speech tags to output</label>
         <br>
-
-        <input class="form-check-input" type="checkbox" value="NNPS" id="NN">
+        <br>
+        <input class="form-check-input" type="checkbox" value="NN" id="NN">
         <label class="form-check-label" for="NN">NN: noun, singular (cat, tree)</label>
         <br>
 
-        <input class="form-check-input" type="checkbox" value="NNPS" id="NNS">
+        <input class="form-check-input" type="checkbox" value="NNS" id="NNS">
         <label class="form-check-label" for="NNS">NNS: noun plural (desks)</label>
         <br>
 
-        <input class="form-check-input" type="checkbox" value="NNPS" id="NNP">
+        <input class="form-check-input" type="checkbox" value="NNP" id="NNP">
         <label class="form-check-label" for="NNP">NNP: proper noun, singular (Ed, Lewis)</label>
         <br>
 
         <input class="form-check-input" type="checkbox" value="NNPS" id="NNPS">
         <label class="form-check-label" for="NNPS">NNPS: proper noun, plural (indians or americans)</label>
         <br>
-
+        <br>
         <input class="form-check-input" type="checkbox" value="VB" id="VB">
         <label class="form-check-label" for="VB">VB: verb (ask)</label>
         <br>
@@ -50,15 +50,22 @@
         <label class="form-check-label" for="VBZ">VBZ: verb, present tense with 3rd person singular (bases)</label>
         <br>
     </form>
-
-    <form id='ignore-words-form'>
-        <label for="ignore-words-input" class="form-label">Ignore Word:</label>
-        <input type="text" class="form-control" id='ignore-words-input'>
-        <label>Ignored Words:</label>
-        <ul class='list-group' id='ignored-words-list'></ul>
-    </form>
-
-    <button type="submit" form="config-form" class="btn btn-primary">Save Config</button>
+    <br>
+    <form id='ignore-words-form' class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="ignore-words-input" class="form-label">Ignore Word:</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" class="form-control" id='ignore-words-input'>
+        </div>    
+            <label>Ignored Words:</label>
+            <ul class='list-group' id='ignored-words-list'></ul>
+        </form>
+    </div>
+    
+    <div id='btn-div'>
+        <button type="submit" form="config-form" class="btn btn-primary">Save Configuration</button>
+    </div>
 
     <script>
         let ignoreWords = []
@@ -68,7 +75,7 @@
         const configForm = document.getElementById('config-form')
         const ignoreWordsForm = document.getElementById('ignore-words-form')
         const ignoredWordsList = document.getElementById('ignored-words-list')
-        
+
         ignoreWordsForm.addEventListener('submit', addIgnoreWord)
         configForm.addEventListener('submit', saveConfig)
 
@@ -82,6 +89,7 @@
             let item_text = document.createTextNode(ignoreWord)
             item.appendChild(item_text)
             ignoredWordsList.appendChild(item)
+            document.getElementById('ignore-words-form').reset()
             ignoreWords.push(ignoreWord)
         }
 
@@ -124,28 +132,8 @@
                 if (err) return console.log('Configuration Update Error. Speak to Ed.')
             })
         }
-
     </script>
 
 </body>
 
 </html>
-<!-- 
-{
-    "nouns": [
-        "NN",
-        "NNS",
-        "NNP",
-        "NNPS"
-    ],
-    "verbs": [
-        "VB",
-        "VGB",
-        "VBD",
-        "VBN",
-        "VBP",
-        "VBZ"
-    ],
-    "ignore_words": ["is"],
-    "save_pos_tags": false
-} -->

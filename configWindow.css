@@ -1,0 +1,20 @@
+body {
+    background-color: rgb(202, 221, 223);
+}
+h1 {
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    text-align: center;
+    color: cornflowerblue;
+}
+#config-form {
+    padding-left: 5vw;
+}
+#ignore-words-form {
+    padding-left: 5vw;;
+}
+#btn-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
