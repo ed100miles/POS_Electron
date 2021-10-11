@@ -56,19 +56,17 @@
     </form>
     <br>
     <form id='ignore-words-form' class="row g-3 align-items-center">
-        <div class="col-auto">
-            <label for="ignore-words-input" class="form-label">Ignore Word:</label>
+        <div class="input-group text-with-button">
+            <input type="text" class="form-control" placeholder="Ignore Word" id='ignore-words-input'>
+            <button class="btn btn-outline-secondary btn-primary" type="submit">Add</button>
         </div>
-        <div class="col-auto">
-            <input type="text" class="form-control" id='ignore-words-input'>
-        </div>
-        <label>Ignored Words:</label>
+        <label>Ignored Words (double click to delete):</label>
         <ul class='list-group' id='ignored-words-list'></ul>
     </form>
     </div>
 
     <div id='btn-div'>
-        <button type="submit" form="config-form" class="btn btn-primary">Save Configuration</button>
+        <button type="submit" form="config-form" class="btn btn-primary" id='save-config-btn'>Save Configuration</button>
     </div>
 
     <script>
@@ -172,6 +170,15 @@
             fs.writeFile('pos_config.json', JSON.stringify(configJSON), function (err) {
                 if (err) return console.log('Configuration Update Error. Speak to Ed.')
             })
+            document.getElementById('save-config-btn').classList.remove('btn-primary')
+            document.getElementById('save-config-btn').classList.add('btn-success')
+            document.getElementById('save-config-btn').innerHTML = 'Saved!'
+            
+            setTimeout(()=>{
+                document.getElementById('save-config-btn').classList.remove('btn-success')
+                document.getElementById('save-config-btn').classList.add('btn-primary')
+                document.getElementById('save-config-btn').innerHTML = 'Save Config'
+            }, 2000)
         }
     </script>
 

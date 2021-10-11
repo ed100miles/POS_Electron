@@ -23,4 +23,9 @@ h1 {
 .list-group-item{
     width: 80vw;
 }
-
+.text-with-button{
+    width: 80vw;
+}
+.btn-outline-secondary{
+    color: aliceblue;
+}
