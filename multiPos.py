@@ -19,6 +19,7 @@ bad_missions = []
 def check_sentence(sentence):
     nouns = set(config['nouns'])
     verbs = set(config['verbs'])
+    # TODO: add capitalised ignore words to list
     ignore_words = config['ignore_words']
     save_pos_tags = config['save_pos_tags']
     pos_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))

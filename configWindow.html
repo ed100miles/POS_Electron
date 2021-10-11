@@ -10,23 +10,121 @@
 
 <body>
     <h1>Mission Configuration</h1>
-    <form id='config-form'>
+    <form id='config-form' class="form-check">
+        <input class="form-check-input" type="checkbox" value="PTAG" id="PTAG">
+        <label class="form-check-label" for="PTAG">Add part of speech tags to output</label>
+        <br>
 
-        <button type="submit" class="btn btn-primary">Save Config</button>
+        <input class="form-check-input" type="checkbox" value="NNPS" id="NN">
+        <label class="form-check-label" for="NN">NN: noun, singular (cat, tree)</label>
+        <br>
+
+        <input class="form-check-input" type="checkbox" value="NNPS" id="NNS">
+        <label class="form-check-label" for="NNS">NNS: noun plural (desks)</label>
+        <br>
+
+        <input class="form-check-input" type="checkbox" value="NNPS" id="NNP">
+        <label class="form-check-label" for="NNP">NNP: proper noun, singular (Ed, Lewis)</label>
+        <br>
+
+        <input class="form-check-input" type="checkbox" value="NNPS" id="NNPS">
+        <label class="form-check-label" for="NNPS">NNPS: proper noun, plural (indians or americans)</label>
+        <br>
+
+        <input class="form-check-input" type="checkbox" value="VB" id="VB">
+        <label class="form-check-label" for="VB">VB: verb (ask)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBG" id="VBG">
+        <label class="form-check-label" for="VBG">VBG: verb gerund (judging)VBD</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBD" id="VBD">
+        <label class="form-check-label" for="VBD">VBD: verb past tense (pleaded)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBN" id="VBN">
+        <label class="form-check-label" for="VBN">VBN: verb past participle (reunified)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBP" id="VBP">
+        <label class="form-check-label" for="VBP">VBP: verb, present tense not 3rd person singular(wrap)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBZ" id="VBZ">
+        <label class="form-check-label" for="VBZ">VBZ: verb, present tense with 3rd person singular (bases)</label>
+        <br>
     </form>
+
+    <form id='ignore-words-form'>
+        <label for="ignore-words-input" class="form-label">Ignore Word:</label>
+        <input type="text" class="form-control" id='ignore-words-input'>
+        <label>Ignored Words:</label>
+        <ul class='list-group' id='ignored-words-list'></ul>
+    </form>
+
+    <button type="submit" form="config-form" class="btn btn-primary">Save Config</button>
+
     <script>
-        let configJSON = {}
+        let ignoreWords = []
         const electron = require('electron');
         const fs = require('fs')
         const { ipcRenderer } = electron;
         const configForm = document.getElementById('config-form')
-        function saveConfig(e){
+        const ignoreWordsForm = document.getElementById('ignore-words-form')
+        const ignoredWordsList = document.getElementById('ignored-words-list')
+        
+        ignoreWordsForm.addEventListener('submit', addIgnoreWord)
+        configForm.addEventListener('submit', saveConfig)
+
+        function addIgnoreWord(e) {
             e.preventDefault()
-            fs.writeFile('pos_config.json', JSON.stringify(configJSON), function(err){
-                if(err) return console.log('error!')
+            let item = document.createElement('li');
+            item.classList.add('dblClickDelete')
+            item.classList.add('list-group-item')
+            item.addEventListener('dblclick', dblClickDelete)
+            let ignoreWord = document.getElementById('ignore-words-input').value
+            let item_text = document.createTextNode(ignoreWord)
+            item.appendChild(item_text)
+            ignoredWordsList.appendChild(item)
+            ignoreWords.push(ignoreWord)
+        }
+
+        function dblClickDelete(e) {
+            let index = ignoreWords.indexOf(e.target.innerHTML)
+            ignoreWords.splice(index, 1)
+            ignoredWordsList.removeChild(e.target)
+            console.log(ignoreWords)
+        }
+
+        function saveConfig(e) {
+            e.preventDefault()
+            let configJSON = {}
+            let nouns = []
+            let verbs = []
+            let savePosTags = false
+            let ignore_words = ignoreWords
+            let elements = document.getElementById('config-form').elements;
+
+            for (let element of elements) {
+                if (element.checked) {
+                    if (element.value[0] == 'N') {
+                        nouns.push(element.value)
+                    }
+                    if (element.value[0] == 'V') {
+                        verbs.push(element.value)
+                    }
+                    if (element.value[0] == 'P') {
+                        savePosTags = true
+                    }
+                }
+            }
+
+            configJSON["nouns"] = nouns
+            configJSON["verbs"] = verbs
+            configJSON["save_pos_tags"] = savePosTags
+            configJSON["ignore_words"] = ignoreWords
+
+            fs.writeFile('pos_config.json', JSON.stringify(configJSON), function (err) {
+                if (err) return console.log('Configuration Update Error. Speak to Ed.')
             })
         }
-        configForm.addEventListener('submit', saveConfig)
+
     </script>
 
 </body>

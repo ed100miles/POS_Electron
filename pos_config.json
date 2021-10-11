@@ -1,18 +1,1 @@
-{
-    "nouns": [
-        "NN",
-        "NNS",
-        "NNP",
-        "NNPS"
-    ],
-    "verbs": [
-        "VB",
-        "VGB",
-        "VBD",
-        "VBN",
-        "VBP",
-        "VBZ"
-    ],
-    "ignore_words": ["is"],
-    "save_pos_tags": false
-}
+{"nouns":["NNPS"],"verbs":[],"save_pos_tags":false,"ignore_words":[]}
