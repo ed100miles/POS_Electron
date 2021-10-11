@@ -1,26 +1,26 @@
-body{
+body {
     background-color: rgb(201, 201, 228);
 }
-#form{
+#form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
-#app-header{
+#app-header {
     padding-top: 5vh;
     text-align: center;
     color: cornflowerblue;
 }
-#mission-form-label{
+#mission-form-label {
     width: 100vw;
     text-align: center;
 }
-#form_content{
+#form_content {
     width: 80vw;
     margin: auto;
     align-items: center;
 }
-#mission_quality{
+#mission_quality {
     text-align: center;
 }

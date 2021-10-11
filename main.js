@@ -49,7 +49,7 @@ function createAddWindow() {
   });
   // load html into window
   addWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'newWindow.html'),
+    pathname: path.join(__dirname, 'multiWindow.html'),
     protocol: 'file',
     slashes: true
   }));
@@ -62,7 +62,7 @@ function createAddWindow() {
 // Catch item from mainWindow
 ipcMain.on('formContent', function (e, formContent) {
   // run py script and send input:
-  let pyshell = new PythonShell('pos.py')
+  let pyshell = new PythonShell('pos.py', {pythonPath: 'venv/bin/python3'})
   pyshell.send(formContent)
   pyshell.on('message', function (message) {
     mainWindow.webContents.send('return_content', message)
@@ -75,12 +75,12 @@ ipcMain.on('formContent', function (e, formContent) {
   })
 })
 
-// Catch file from newWindow
-ipcMain.on('file', function(e, file){
+// Catch file from multiWindow
+ipcMain.on('file', function (e, file) {
   console.log(file)
-  let pyshell = new PythonShell('multiPos.py')
+  let pyshell = new PythonShell('multiPos.py', {pythonPath: 'venv/bin/python3'})
   pyshell.send(file)
-  pyshell.on('message', function(message){
+  pyshell.on('message', function (message) {
     console.log(message)
     addWindow.webContents.send('files_done', 123)
   })
@@ -90,7 +90,7 @@ ipcMain.on('file', function(e, file){
     console.log('The exit signal was: ' + signal);
     console.log('finished');
   })
-  
+
 })
 
 // Create menu template
@@ -99,7 +99,8 @@ const mainMenuTemplate = [
     label: 'File',
     submenu: [
       {
-        label: 'New Window',
+        label: 'Multi-Mission Window',
+        accelerator: process.platform == 'darwin' ? 'Command+M' : 'Ctrl+M',
         click() {
           createAddWindow()
         }
