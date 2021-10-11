@@ -68,7 +68,6 @@
     </div>
 
     <script>
-        let ignoreWords = []
         const electron = require('electron');
         const fs = require('fs')
         const { ipcRenderer } = electron;
@@ -76,14 +75,45 @@
         const ignoreWordsForm = document.getElementById('ignore-words-form')
         const ignoredWordsList = document.getElementById('ignored-words-list')
 
+        let ignoreWords = []
+
         ignoreWordsForm.addEventListener('submit', addIgnoreWord)
         configForm.addEventListener('submit', saveConfig)
+
+        ipcRenderer.on('update-config', updateConfig())
+
+        function updateConfig(){
+            let posConfig
+            //TODO: this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            fs.readFile('pos_config.json', (err, data) => {
+                if (err) throw err;
+                posConfig = JSON.parse(data);
+                console.log(posConfig);
+                for(let noun of posConfig['nouns']){
+                    document.getElementById(noun).checked = true
+                };
+                for(let verb of posConfig['verbs']){
+                    document.getElementById(verb).checked = true
+                };
+                for(let word of posConfig['ignore_words']){
+                    let item = document.createElement('li');
+                    item.classList.add('dblClickDelete', 'list-group-item')
+                    item.addEventListener('dblclick', dblClickDelete)
+                    let item_text = document.createTextNode(word)
+                    item.appendChild(item_text)
+                    ignoredWordsList.appendChild(item)
+                    ignoreWords.push(word)
+                }
+                if(posConfig['save_pos_tags']){
+                    document.getElementById('PTAG').checked = true
+                }
+            });
+        };
 
         function addIgnoreWord(e) {
             e.preventDefault()
             let item = document.createElement('li');
-            item.classList.add('dblClickDelete')
-            item.classList.add('list-group-item')
+            item.classList.add('dblClickDelete', 'list-group-item')
             item.addEventListener('dblclick', dblClickDelete)
             let ignoreWord = document.getElementById('ignore-words-input').value
             let item_text = document.createTextNode(ignoreWord)

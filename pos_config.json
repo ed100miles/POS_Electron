@@ -1,1 +1,1 @@
-{"nouns":["NN","NNS","NNP","NNPS"],"verbs":["VB","VBG","VBD","VBP","VBZ"],"save_pos_tags":true,"ignore_words":[]}
+{"nouns":["NN","NNS","NNP","NNPS"],"verbs":["VB","VBG","VBD","VBN","VBP","VBZ"],"save_pos_tags":true,"ignore_words":["cheese"]}

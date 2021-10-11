@@ -78,11 +78,17 @@ function createConfigWindow() {
     protocol: 'file',
     slashes: true
   }));
+  // when config window ready to render, send signal to update form based on config file
+  configWindow.on('ready-to-show', ()=>{
+    configWindow.send('update-config')
+  })
   // Garbage collection
   configWindow.on('close', function () {
     configWindow = null;
   })
 }
+
+
 
 // Catch item from mainWindow
 ipcMain.on('formContent', function (e, formContent) {
