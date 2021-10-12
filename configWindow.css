@@ -14,7 +14,18 @@ h1 {
     padding-left: 5vw;;
 }
 #btn-div{
+    padding-top: 5vh;
+    padding-bottom: 5vh;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.list-group-item{
+    width: 80vw;
+}
+.text-with-button{
+    width: 80vw;
+}
+.btn-outline-secondary{
+    color: aliceblue;
 }

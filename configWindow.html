@@ -15,6 +15,10 @@
         <label class="form-check-label" for="PTAG">Add part of speech tags to output</label>
         <br>
         <br>
+        <input class="form-check-input" type="checkbox" value="AMBI_NOUN" id="AMBI_NOUN">
+        <label class="form-check-label" for="AMBI_NOUN">Count ambiguous noun/verbs (end, dance, cut, dress, etc) as verbs</label>
+        <br>
+        <br>
         <input class="form-check-input" type="checkbox" value="NN" id="NN">
         <label class="form-check-label" for="NN">NN: noun, singular (cat, tree)</label>
         <br>
@@ -35,7 +39,7 @@
         <label class="form-check-label" for="VB">VB: verb (ask)</label>
         <br>
         <input class="form-check-input" type="checkbox" value="VBG" id="VBG">
-        <label class="form-check-label" for="VBG">VBG: verb gerund (judging)VBD</label>
+        <label class="form-check-label" for="VBG">VBG: verb gerund (judging)</label>
         <br>
         <input class="form-check-input" type="checkbox" value="VBD" id="VBD">
         <label class="form-check-label" for="VBD">VBD: verb past tense (pleaded)</label>
@@ -52,23 +56,20 @@
     </form>
     <br>
     <form id='ignore-words-form' class="row g-3 align-items-center">
-        <div class="col-auto">
-            <label for="ignore-words-input" class="form-label">Ignore Word:</label>
+        <div class="input-group text-with-button">
+            <input type="text" class="form-control" placeholder="Ignore Word" id='ignore-words-input'>
+            <button class="btn btn-outline-secondary btn-primary" type="submit">Add</button>
         </div>
-        <div class="col-auto">
-            <input type="text" class="form-control" id='ignore-words-input'>
-        </div>    
-            <label>Ignored Words:</label>
-            <ul class='list-group' id='ignored-words-list'></ul>
-        </form>
+        <label>Ignored Words (double click to delete):</label>
+        <ul class='list-group' id='ignored-words-list'></ul>
+    </form>
     </div>
-    
+
     <div id='btn-div'>
-        <button type="submit" form="config-form" class="btn btn-primary">Save Configuration</button>
+        <button type="submit" form="config-form" class="btn btn-primary" id='save-config-btn'>Save Configuration</button>
     </div>
 
     <script>
-        let ignoreWords = []
         const electron = require('electron');
         const fs = require('fs')
         const { ipcRenderer } = electron;
@@ -76,14 +77,47 @@
         const ignoreWordsForm = document.getElementById('ignore-words-form')
         const ignoredWordsList = document.getElementById('ignored-words-list')
 
+        let ignoreWords = []
+
         ignoreWordsForm.addEventListener('submit', addIgnoreWord)
         configForm.addEventListener('submit', saveConfig)
+
+        ipcRenderer.on('update-config', updateConfig())
+
+        function updateConfig() {
+            let posConfig
+            fs.readFile('pos_config.json', (err, data) => {
+                if (err) throw err;
+                posConfig = JSON.parse(data);
+                console.log(posConfig);
+                for (let noun of posConfig['nouns']) {
+                    document.getElementById(noun).checked = true
+                };
+                for (let verb of posConfig['verbs']) {
+                    document.getElementById(verb).checked = true
+                };
+                for (let word of posConfig['ignore_words']) {
+                    let item = document.createElement('li');
+                    item.classList.add('dblClickDelete', 'list-group-item')
+                    item.addEventListener('dblclick', dblClickDelete)
+                    let item_text = document.createTextNode(word)
+                    item.appendChild(item_text)
+                    ignoredWordsList.appendChild(item)
+                    ignoreWords.push(word)
+                }
+                if (posConfig['save_pos_tags']) {
+                    document.getElementById('PTAG').checked = true
+                }
+                if (posConfig['ambig_nouns']){
+                    document.getElementById('AMBI_NOUN').checked = true
+                }
+            });
+        };
 
         function addIgnoreWord(e) {
             e.preventDefault()
             let item = document.createElement('li');
-            item.classList.add('dblClickDelete')
-            item.classList.add('list-group-item')
+            item.classList.add('dblClickDelete', 'list-group-item')
             item.addEventListener('dblclick', dblClickDelete)
             let ignoreWord = document.getElementById('ignore-words-input').value
             let item_text = document.createTextNode(ignoreWord)
@@ -106,6 +140,7 @@
             let nouns = []
             let verbs = []
             let savePosTags = false
+            let ambiguous_nouns = false
             let ignore_words = ignoreWords
             let elements = document.getElementById('config-form').elements;
 
@@ -120,17 +155,30 @@
                     if (element.value[0] == 'P') {
                         savePosTags = true
                     }
+                    if (element.value == 'AMBI_NOUN'){
+                        ambiguous_nouns = true
+                    }
                 }
             }
 
             configJSON["nouns"] = nouns
             configJSON["verbs"] = verbs
+            configJSON['ambig_nouns'] = ambiguous_nouns
             configJSON["save_pos_tags"] = savePosTags
             configJSON["ignore_words"] = ignoreWords
 
             fs.writeFile('pos_config.json', JSON.stringify(configJSON), function (err) {
                 if (err) return console.log('Configuration Update Error. Speak to Ed.')
             })
+            document.getElementById('save-config-btn').classList.remove('btn-primary')
+            document.getElementById('save-config-btn').classList.add('btn-success')
+            document.getElementById('save-config-btn').innerHTML = 'Saved!'
+            
+            setTimeout(()=>{
+                document.getElementById('save-config-btn').classList.remove('btn-success')
+                document.getElementById('save-config-btn').classList.add('btn-primary')
+                document.getElementById('save-config-btn').innerHTML = 'Save Config'
+            }, 2000)
         }
     </script>
 
