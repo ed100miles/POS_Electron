@@ -26,9 +26,7 @@ app.on('ready', () => {
   }));
 
   // Quit app when closed
-  mainWindow.on('closed', function () {
-    app.quit()
-  })
+  mainWindow.on('closed', () => app.quit())
 
   // Build meue from template
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -55,9 +53,7 @@ function createMultiWindow() {
     slashes: true
   }));
   // Garbage collection
-  multiWindow.on('close', function () {
-    multiWindow = null;
-  })
+  multiWindow.on('close', () => multiWindow = null)
 }
 
 // Handle create mission config window
@@ -79,21 +75,17 @@ function createConfigWindow() {
     slashes: true
   }));
   // when config window ready to render, send signal to update form based on config file
-  configWindow.on('ready-to-show', ()=>{
+  configWindow.on('ready-to-show', () => {
     configWindow.send('update-config')
   })
   // Garbage collection
-  configWindow.on('close', function () {
-    configWindow = null;
-  })
+  configWindow.on('close', () => configWindow = null)
 }
-
-
 
 // Catch item from mainWindow
 ipcMain.on('formContent', function (e, formContent) {
   // run py script and send input:
-  let pyshell = new PythonShell('pos.py', {pythonPath: 'venv/bin/python3'})
+  let pyshell = new PythonShell('pos.py', { pythonPath: 'venv/bin/python3' })
   pyshell.send(formContent)
   pyshell.on('message', function (message) {
     mainWindow.webContents.send('return_content', message)
@@ -109,7 +101,7 @@ ipcMain.on('formContent', function (e, formContent) {
 // Catch file from multiWindow
 ipcMain.on('file', function (e, file) {
   console.log(file)
-  let pyshell = new PythonShell('multiPos.py', {pythonPath: 'venv/bin/python3'})
+  let pyshell = new PythonShell('multiPos.py', { pythonPath: 'venv/bin/python3' })
   pyshell.send(file)
   pyshell.on('message', function (message) {
     console.log(message)
@@ -136,7 +128,7 @@ const mainMenuTemplate = [
         }
       },
       {
-        label:'Mission Configuration',
+        label: 'Mission Configuration',
         accelerator: process.platform == 'darwin' ? 'Command+K' : 'Ctrl+K',
         click() {
           createConfigWindow()
