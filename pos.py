@@ -13,6 +13,8 @@ with open('pos_config.json', 'r') as config_file:
 good_missions = []
 bad_missions = []
 
+#TODO: interpret verbs that can be nouns as verbs
+
 def check_sentence(sentence):
     nouns = set(config['nouns'])
     verbs = set(config['verbs'])
