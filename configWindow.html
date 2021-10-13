@@ -14,6 +14,14 @@
         <input class="form-check-input" type="checkbox" value="PTAG" id="PTAG">
         <label class="form-check-label" for="PTAG">Add part of speech tags to output</label>
         <br>
+        <input class="form-check-input" type="checkbox" value="SPELL_C" id="SPELL_C">
+        <label class="form-check-label" for="SPELL_C">Attempt to correct misspelled words</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="CAP_I" id="CAP_I">
+        <label class="form-check-label" for="CAP_I">Capitalize any lone 'i' in the mission (so preposition not noun)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="EXP_CONT" id="EXP_CONT">
+        <label class="form-check-label" for="EXP_CONT">Expand any contractions (I'm -> I am, gonna -> going to)</label>
         <br>
         <input class="form-check-input" type="checkbox" value="AMBI_NOUN" id="AMBI_NOUN">
         <label class="form-check-label" for="AMBI_NOUN">Count ambiguous noun/verbs (end, dance, cut, dress, etc) as verbs</label>
@@ -89,7 +97,6 @@
             fs.readFile('pos_config.json', (err, data) => {
                 if (err) throw err;
                 posConfig = JSON.parse(data);
-                console.log(posConfig);
                 for (let noun of posConfig['nouns']) {
                     document.getElementById(noun).checked = true
                 };
@@ -110,6 +117,15 @@
                 }
                 if (posConfig['ambig_nouns']){
                     document.getElementById('AMBI_NOUN').checked = true
+                }
+                if (posConfig['spell_check']){
+                    document.getElementById('SPELL_C').checked = true
+                }
+                if (posConfig['capitalize_i']){
+                    document.getElementById('CAP_I').checked = true
+                }
+                if (posConfig['expand_contractions']){
+                    document.getElementById('EXP_CONT').checked = true
                 }
             });
         };
@@ -141,6 +157,9 @@
             let verbs = []
             let savePosTags = false
             let ambiguous_nouns = false
+            let spell_check = false
+            let capitalize_i = false
+            let expand_contractions = false
             let ignore_words = ignoreWords
             let elements = document.getElementById('config-form').elements;
 
@@ -158,6 +177,15 @@
                     if (element.value == 'AMBI_NOUN'){
                         ambiguous_nouns = true
                     }
+                    if (element.value == 'SPELL_C'){
+                        spell_check = true
+                    }
+                    if (element.value == 'EXP_CONT'){
+                        expand_contractions = true
+                    }
+                    if (element.value == 'CAP_I'){
+                        capitalize_i = true
+                    }
                 }
             }
 
@@ -166,14 +194,19 @@
             configJSON['ambig_nouns'] = ambiguous_nouns
             configJSON["save_pos_tags"] = savePosTags
             configJSON["ignore_words"] = ignoreWords
+            configJSON["spell_check"] = spell_check
+            configJSON["capitalize_i"] = capitalize_i
+            configJSON["expand_contractions"] = expand_contractions
+
 
             fs.writeFile('pos_config.json', JSON.stringify(configJSON), function (err) {
                 if (err) return console.log('Configuration Update Error. Speak to Ed.')
             })
+
+            // Edit saved button to show saved, then revert
             document.getElementById('save-config-btn').classList.remove('btn-primary')
             document.getElementById('save-config-btn').classList.add('btn-success')
             document.getElementById('save-config-btn').innerHTML = 'Saved!'
-            
             setTimeout(()=>{
                 document.getElementById('save-config-btn').classList.remove('btn-success')
                 document.getElementById('save-config-btn').classList.add('btn-primary')

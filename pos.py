@@ -12,10 +12,6 @@ nltk.download('averaged_perceptron_tagger')
 sent = input()
 
 
-good_missions = []
-bad_missions = []
-
-
 def expand_contractions(sentence):
     return ' '.join(contractions.fix(word) for word in sentence.split())
 
@@ -42,13 +38,13 @@ def check_sentence(sentence):
     # Get config settings
     with open('pos_config.json', 'r') as config_file:
         config = json.load(config_file)
-    nouns = set(config['nouns'])
-    verbs = set(config['verbs'])
-    ignore_words = config['ignore_words']
-    check_ambiguous_verb_nouns = config['ambig_nouns']
-    fix_spelling = True
-    expand_conts = True
-    upper_case_i = True
+    nouns: list = set(config['nouns'])
+    verbs: list = set(config['verbs'])
+    ignore_words: list = config['ignore_words']
+    check_ambiguous_verb_nouns: bool = config['ambig_nouns']
+    fix_spelling: bool = config['spell_check']
+    expand_conts: bool = config['capitalize_i']
+    upper_case_i: bool = config['expand_contractions']
     # If config specifies, convert lone 'i' to 'I'
     if upper_case_i:
         sentence = make_i_upper(sentence)
@@ -63,6 +59,7 @@ def check_sentence(sentence):
     tokenized = nltk.word_tokenize(sentence)
     # If config specifies, check to see if sentence contains any
     # nouns that can also be a verb (end, dance, cut, dress, etc)
+    # and count as a verb. TODO: this needs work.
     noun_could_be_verb = False
     if check_ambiguous_verb_nouns:
         for word in tokenized:
@@ -71,15 +68,14 @@ def check_sentence(sentence):
     pos_tagged = nltk.pos_tag(tokenized)
     pos_list = [x[1] for x in pos_tagged if x[0] not in ignore_words]
     if (
-        len(nouns & set(pos_list)) > 0 
+        len(nouns & set(pos_list)) > 0
         and
         (len(verbs & set(pos_list)) > 0 or noun_could_be_verb)
-        ):
-        
+    ):
         print('Good Mission!')
     else:
         print('Bad Mission')
-    print(pos_tagged)
+    # print(pos_tagged)
 
 
 check_sentence(sent)
