@@ -5,10 +5,10 @@ import contractions
 import json
 from spellchecker import SpellChecker
 
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+# nltk.download('stopwords')
+# nltk.download('wordnet')
+# nltk.download('punkt')
+# nltk.download('averaged_perceptron_tagger')
 
 sent = input()
 
@@ -77,7 +77,7 @@ def check_sentence(sentence):
         print('Good Mission!')
     else:
         print('Bad Mission')
-    print(pos_tagged)
+    # print(pos_tagged)
 
 
 check_sentence(sent)

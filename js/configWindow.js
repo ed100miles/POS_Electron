@@ -1,5 +1,6 @@
 const electron = require('electron');
 const fs = require('fs')
+const path = require('path')
 const { ipcRenderer } = electron;
 const configForm = document.getElementById('config-form')
 const ignoreWordsForm = document.getElementById('ignore-words-form')
@@ -13,7 +14,7 @@ ipcRenderer.on('update-config', updateConfig)
 
 function updateConfig() {
     let posConfig
-    fs.readFile('./configs/pos_config.json', (err, data) => {
+    fs.readFile(path.join(__dirname, '../configs/pos_config.json'), (err, data) => {
         if (err) throw err;
         posConfig = JSON.parse(data);
         for (let noun of posConfig['nouns']) {
@@ -118,9 +119,11 @@ function saveConfig(e) {
     configJSON["capitalize_i"] = capitalize_i
     configJSON["expand_contractions"] = expand_contractions
 
-    fs.writeFile('./configs/pos_config.json', JSON.stringify(configJSON), function (err) {
-        if (err) return console.log('Configuration Update Error. Speak to Ed.')
-    })
+    fs.writeFile(path.join(__dirname, '../configs/pos_config.json'),
+        JSON.stringify(configJSON),
+        function (err) {
+            if (err) return console.log('Configuration Update Error. Speak to Ed.')
+        })
 
     // Edit saved button to show saved, then revert
     document.getElementById('save-config-btn').classList.remove('btn-primary')

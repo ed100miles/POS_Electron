@@ -14,6 +14,7 @@ form.addEventListener('submit', (e) => {
     mission_quality.innerHTML = ''
     // send mission to be checked to main.js
     ipcRenderer.send('formContent', form_content)
+    console.log('form content sent')
 })
 
 ipcRenderer.on('return_content', (e, return_content) => {

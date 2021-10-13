@@ -80,10 +80,13 @@ function createConfigWindow() {
   configWindow.on('close', () => configWindow = null)
 }
 
-// Catch item from mainWindow
+// Catch item from mainWindow.js
 ipcMain.on('formContent', function (e, formContent) {
+  console.log('form content receive from mainWindow')
   // run py script and send input:
-  let pyshell = new PythonShell('python_scripts/pos.py', { pythonPath: 'venv/bin/python3' })
+  let pyshell = new PythonShell(
+    path.join(__dirname, '../python_scripts/pos.py'),
+    { pythonPath: path.join(__dirname, '../venv/bin/python3') })
   pyshell.send(formContent)
   pyshell.on('message', function (message) {
     mainWindow.webContents.send('return_content', message)
@@ -99,7 +102,9 @@ ipcMain.on('formContent', function (e, formContent) {
 // Catch file from multiWindow
 ipcMain.on('file', function (e, file) {
   console.log(file)
-  let pyshell = new PythonShell('python_scripts/multiPos.py', { pythonPath: 'venv/bin/python3' })
+  let pyshell = new PythonShell(
+    path.join(__dirname, './python_scripts/multiPos.py'),
+    { pythonPath: path.join(__dirname, './venv/bin/python3') })
   pyshell.send(file)
   pyshell.on('message', function (message) {
     console.log(message)
