@@ -1,8 +1,10 @@
 import nltk
+from nltk import tokenize
 from nltk.corpus import wordnet as wn
 import contractions
 import json
 from spellchecker import SpellChecker
+from textblob import TextBlob
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -12,13 +14,13 @@ nltk.download('averaged_perceptron_tagger')
 sent = input()
 
 
-def expand_contractions(sentence):
+def expand_contractions(sentence: str) -> str:
     return ' '.join(contractions.fix(word) for word in sentence.split())
 
 
-def correct_spelling(sentence):
-    spell = SpellChecker()
-    return ' '.join([spell.correction(word) for word in sentence.split()])
+def correct_spelling(sentence:str) -> str:
+    spell:object = SpellChecker()
+    return ' '.join(spell.correction(word) for word in sentence.split())
 
 
 def possible_verb(word):
@@ -59,7 +61,8 @@ def check_sentence(sentence):
     tokenized = nltk.word_tokenize(sentence)
     # If config specifies, check to see if sentence contains any
     # nouns that can also be a verb (end, dance, cut, dress, etc)
-    # and count as a verb. TODO: this needs work.
+    # and count as a verb. TODO: this needs more thought,
+    # a single word is sufficient criteria
     noun_could_be_verb = False
     if check_ambiguous_verb_nouns:
         for word in tokenized:
@@ -75,7 +78,7 @@ def check_sentence(sentence):
         print('Good Mission!')
     else:
         print('Bad Mission')
-    # print(pos_tagged)
+    print(pos_tagged)
 
 
 check_sentence(sent)

@@ -67,7 +67,8 @@ def check_sentence(sentence):
     tokenized = nltk.word_tokenize(sentence)
     # If config specifies, check to see if sentence contains any
     # nouns that can also be a verb (end, dance, cut, dress, etc)
-    # and count as a verb. TODO: this needs work.
+    # and count as a verb. TODO: this needs more thought,
+    # a single word is sufficient criteria
     noun_could_be_verb = False
     if check_ambiguous_verb_nouns:
         for word in tokenized:
@@ -88,7 +89,7 @@ def check_sentence(sentence):
         else:
             bad_missions.append(f'{sentence}\n\n')
 
-
+# read input and write results to file
 with open(path_to_missions, 'r') as in_file:
     for line in in_file.readlines():
         check_sentence(line)
