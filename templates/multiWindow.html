@@ -2,7 +2,7 @@
 <html lang="en">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
-<link rel='stylesheet' href="multiWindow.css">
+<link rel='stylesheet' href="../css/multiWindow.css">
 
 <head>
     <title>Check Mission Files</title>
@@ -26,28 +26,7 @@
             <a href="file:///bad.txt" class="btn btn-danger" download>Download Bad Missions</a>
         </div>
     </div>
-
-    <script>
-        const electron = require('electron');
-        const { ipcRenderer } = electron;
-        const form = document.getElementById('form')
-        const dl_links = document.getElementById('dl_links')
-
-        // Pass file path to main.js to be sent to pos.py
-        form.addEventListener('submit', (e) => {
-            e.preventDefault()
-            const file = document.getElementById('upload_file').files[0].path
-            console.log(file)
-            ipcRenderer.send('file', file)
-        })
-        // On signal from main.js, display btns to dl good+bad files
-        ipcRenderer.on('files_done', (e) => {
-            console.log('files are done...')
-            dl_links.style.display = 'block'
-        })
-    </script>
-
+    <script src="../js/multiWindow.js"></script>
 </body>
 
 </html>
-

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+<link rel='stylesheet' href="../css/configWindow.css">
+
+<head>
+    <title>Mission Configuration</title>
+</head>
+
+<body>
+    <h1>Mission Configuration</h1>
+    <form id='config-form' class="form-check">
+        <input class="form-check-input" type="checkbox" value="PTAG" id="PTAG">
+        <label class="form-check-label" for="PTAG">Add part of speech tags to output</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="SPELL_C" id="SPELL_C">
+        <label class="form-check-label" for="SPELL_C">Attempt to correct misspelled words</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="CAP_I" id="CAP_I">
+        <label class="form-check-label" for="CAP_I">Capitalize any lone 'i' in the mission (so preposition not
+            noun)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="EXP_CONT" id="EXP_CONT">
+        <label class="form-check-label" for="EXP_CONT">Expand any contractions (I'm -> I am, gonna -> going to)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="AMBI_NOUN" id="AMBI_NOUN">
+        <label class="form-check-label" for="AMBI_NOUN">Count ambiguous noun/verbs (end, dance, cut, dress, etc) as
+            verbs</label>
+        <br>
+        <br>
+        <input class="form-check-input" type="checkbox" value="NN" id="NN">
+        <label class="form-check-label" for="NN">NN: noun, singular (cat, tree)</label>
+        <br>
+
+        <input class="form-check-input" type="checkbox" value="NNS" id="NNS">
+        <label class="form-check-label" for="NNS">NNS: noun plural (desks)</label>
+        <br>
+
+        <input class="form-check-input" type="checkbox" value="NNP" id="NNP">
+        <label class="form-check-label" for="NNP">NNP: proper noun, singular (Ed, Lewis)</label>
+        <br>
+
+        <input class="form-check-input" type="checkbox" value="NNPS" id="NNPS">
+        <label class="form-check-label" for="NNPS">NNPS: proper noun, plural (indians or americans)</label>
+        <br>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VB" id="VB">
+        <label class="form-check-label" for="VB">VB: verb (ask)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBG" id="VBG">
+        <label class="form-check-label" for="VBG">VBG: verb gerund (judging)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBD" id="VBD">
+        <label class="form-check-label" for="VBD">VBD: verb past tense (pleaded)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBN" id="VBN">
+        <label class="form-check-label" for="VBN">VBN: verb past participle (reunified)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBP" id="VBP">
+        <label class="form-check-label" for="VBP">VBP: verb, present tense not 3rd person singular(wrap)</label>
+        <br>
+        <input class="form-check-input" type="checkbox" value="VBZ" id="VBZ">
+        <label class="form-check-label" for="VBZ">VBZ: verb, present tense with 3rd person singular (bases)</label>
+        <br>
+    </form>
+    <br>
+    <form id='ignore-words-form' class="row g-3 align-items-center">
+        <div class="input-group text-with-button">
+            <input type="text" class="form-control" placeholder="Ignore Word" id='ignore-words-input'>
+            <button class="btn btn-outline-secondary btn-primary" type="submit">Add</button>
+        </div>
+        <label>Ignored Words (double click to delete):</label>
+        <ul class='list-group' id='ignored-words-list'></ul>
+    </form>
+    </div>
+
+    <div id='btn-div'>
+        <button type="submit" form="config-form" class="btn btn-primary" id='save-config-btn'>Save
+            Configuration</button>
+    </div>
+
+    <script src='../js/configWindow.js'></script>
+
+</body>
+
+</html>

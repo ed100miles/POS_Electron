@@ -43,7 +43,7 @@ def make_i_upper(sentence):
 def check_sentence(sentence):
     """"""
     # Get config settings
-    with open('pos_config.json', 'r') as config_file:
+    with open('./configs/pos_config.json', 'r') as config_file:
         config = json.load(config_file)
     nouns: list = set(config['nouns'])
     verbs: list = set(config['verbs'])

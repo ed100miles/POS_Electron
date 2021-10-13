@@ -20,14 +20,12 @@ app.on('ready', () => {
   });
   // load html into window
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'mainWindow.html'),
+    pathname: path.join(__dirname, '../templates/mainWindow.html'),
     protocol: 'file',
     slashes: true
   }));
-
   // Quit app when closed
   mainWindow.on('closed', () => app.quit())
-
   // Build meue from template
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
   // Insert menu
@@ -48,7 +46,7 @@ function createMultiWindow() {
   });
   // load html into window
   multiWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'multiWindow.html'),
+    pathname: path.join(__dirname, '../templates/multiWindow.html'),
     protocol: 'file',
     slashes: true
   }));
@@ -70,7 +68,7 @@ function createConfigWindow() {
   });
   // load html into window
   configWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'configWindow.html'),
+    pathname: path.join(__dirname, '../templates/configWindow.html'),
     protocol: 'file',
     slashes: true
   }));
@@ -85,7 +83,7 @@ function createConfigWindow() {
 // Catch item from mainWindow
 ipcMain.on('formContent', function (e, formContent) {
   // run py script and send input:
-  let pyshell = new PythonShell('pos.py', { pythonPath: 'venv/bin/python3' })
+  let pyshell = new PythonShell('python_scripts/pos.py', { pythonPath: 'venv/bin/python3' })
   pyshell.send(formContent)
   pyshell.on('message', function (message) {
     mainWindow.webContents.send('return_content', message)
@@ -101,7 +99,7 @@ ipcMain.on('formContent', function (e, formContent) {
 // Catch file from multiWindow
 ipcMain.on('file', function (e, file) {
   console.log(file)
-  let pyshell = new PythonShell('multiPos.py', { pythonPath: 'venv/bin/python3' })
+  let pyshell = new PythonShell('python_scripts/multiPos.py', { pythonPath: 'venv/bin/python3' })
   pyshell.send(file)
   pyshell.on('message', function (message) {
     console.log(message)
