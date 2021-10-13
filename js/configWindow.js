@@ -9,8 +9,7 @@ let ignoreWords = []
 
 ignoreWordsForm.addEventListener('submit', addIgnoreWord)
 configForm.addEventListener('submit', saveConfig)
-
-ipcRenderer.on('update-config', updateConfig())
+ipcRenderer.on('update-config', updateConfig)
 
 function updateConfig() {
     let posConfig
@@ -118,7 +117,6 @@ function saveConfig(e) {
     configJSON["spell_check"] = spell_check
     configJSON["capitalize_i"] = capitalize_i
     configJSON["expand_contractions"] = expand_contractions
-
 
     fs.writeFile('./configs/pos_config.json', JSON.stringify(configJSON), function (err) {
         if (err) return console.log('Configuration Update Error. Speak to Ed.')

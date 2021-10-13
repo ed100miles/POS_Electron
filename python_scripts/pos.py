@@ -4,7 +4,6 @@ from nltk.corpus import wordnet as wn
 import contractions
 import json
 from spellchecker import SpellChecker
-from textblob import TextBlob
 
 nltk.download('stopwords')
 nltk.download('wordnet')
