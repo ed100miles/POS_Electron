@@ -7,8 +7,7 @@ from pathlib import Path
 
 path_to_missions, config_path = input().split(',')
 
-# out_folder = '/User/Ed/Downloads/'
-out_folder= str(Path.home() / "Downloads")
+out_folder = str(Path.home() / "Downloads")
 
 good_missions = {}
 bad_missions = {}
@@ -43,19 +42,14 @@ def check_sentence(sentence):
     nouns: list = set(config['nouns'])
     verbs: list = set(config['verbs'])
     ignore_words: list = config['ignore_words']
-    check_ambiguous_verb_nouns: bool = config['ambig_nouns']
-    fix_spelling: bool = config['spell_check']
-    expand_conts: bool = config['capitalize_i']
-    upper_case_i: bool = config['expand_contractions']
-    save_pos_tags: bool = config['save_pos_tags']
     # If config specifies, convert lone 'i' to 'I'
-    if upper_case_i:
+    if config['capitalize_i']:
         sentence = make_i_upper(sentence)
     # If config specifies, convert contractions eg "I'll" -> 'I will'
-    if expand_conts:
+    if config['expand_contractions']:
         sentence = expand_contractions(sentence)
     # If config specifies, attempt to correct any misspelled words
-    if fix_spelling:
+    if config['spell_check']:
         sentence = str(correct_spelling(sentence))
     ignore_words + [x.capitalize() for x in ignore_words]
     # Tokenize sentence
@@ -65,7 +59,7 @@ def check_sentence(sentence):
     # and count as a verb. TODO: this needs more thought,
     # a single word is sufficient criteria
     noun_could_be_verb = False
-    if check_ambiguous_verb_nouns:
+    if config['ambig_nouns']:
         for word in tokenized:
             if possible_verb(word):
                 noun_could_be_verb = True
@@ -74,14 +68,16 @@ def check_sentence(sentence):
 
     if (len(nouns & set(pos_list)) > 0 and
             (len(verbs & set(pos_list)) > 0) or noun_could_be_verb):
-        if save_pos_tags:
-            good_missions[str((len(good_missions)+1))] = f'{sentence}-->{pos_tagged}'
+        if config['save_pos_tags']:
+            good_missions[str((len(good_missions)+1))
+                          ] = f'{sentence}-->{pos_tagged}'
             # good_missions.append(f'{sentence}\n{pos_tagged}\n\n')
         else:
             good_missions[str((len(good_missions)+1))] = f'{sentence}'
     else:
-        if save_pos_tags:
-            bad_missions[str((len(bad_missions)+1))] = f'{sentence}-->{pos_tagged}'
+        if config['save_pos_tags']:
+            bad_missions[str((len(bad_missions)+1))
+                         ] = f'{sentence}-->{pos_tagged}'
         else:
             bad_missions[str((len(bad_missions)+1))] = f'{sentence}'
 
@@ -91,9 +87,8 @@ with open(path_to_missions, 'r') as in_file:
     for line in in_file.readlines():
         check_sentence(line)
 
-out_dict = json.dumps({"good":good_missions, "bad":bad_missions, "dl_path": str(Path.home() / "Downloads")})
-
-# with open('./output.json', 'w') as out_file:
-#     json.dump(out_dict, out_file)
+out_dict = json.dumps({"good": good_missions,
+                       "bad": bad_missions,
+                       "dl_path": str(Path.home() / "Downloads")})
 
 print(out_dict)

@@ -1,11 +1,13 @@
 body {
-    background-color: rgb(202, 221, 223);
+    background-image: url('../assets/images/metal.jpg');
+    background-size: cover;
+    color: antiquewhite;
 }
 h1 {
     padding-top: 5vh;
     padding-bottom: 5vh;
     text-align: center;
-    color: cornflowerblue;
+    color: antiquewhite;
 }
 #config-form {
     padding-left: 5vw;

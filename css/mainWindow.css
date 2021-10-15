@@ -1,5 +1,7 @@
 body {
-    background-color: rgb(202, 221, 223);
+    background-image: url('../assets/images/metal.jpg');
+    background-size: cover;
+    color: antiquewhite;
 }
 #form {
     display: flex;
@@ -10,7 +12,7 @@ body {
 #app-header {
     padding-top: 5vh;
     text-align: center;
-    color: cornflowerblue;
+    color: antiquewhite;
 }
 #mission-form-label {
     width: 100vw;

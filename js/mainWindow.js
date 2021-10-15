@@ -25,7 +25,7 @@ ipcRenderer.on('return_content', (e, return_content) => {
     if (return_content == 'Bad Mission') {
         mission_quality.style.color = 'red'
     } else {
-        mission_quality.style.color = 'green'
+        mission_quality.style.color = 'rgb(50, 251, 50)'
     }
     mission_quality.innerHTML = return_content
     // and reset button to show ready for new check

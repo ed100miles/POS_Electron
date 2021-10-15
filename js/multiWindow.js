@@ -1,7 +1,9 @@
 const electron = require('electron');
 const { app } = require('electron')
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs');
+const { resolve } = require('path');
+const { rejects } = require('assert');
 const { ipcRenderer } = electron;
 const form = document.getElementById('form')
 const dl_links = document.getElementById('dl_links')
@@ -16,54 +18,37 @@ form.addEventListener('submit', (e) => {
 })
 
 // On signal from main.js, display btns to dl good+bad files
-ipcRenderer.on('files_done', (e, data) => {
+ipcRenderer.on('files_done', (_, data) => {
     data = JSON.parse(data)
-    console.log(data)
     let dl_good = path.join(data["dl_path"], 'good.txt')
     let dl_bad = path.join(data["dl_path"], 'bad.txt')
-    fs.unlink(dl_good, (err) => {
-        if (err) {
-            console.error(err)
-            return
+    let deletedFiles = new Promise((resolve, reject) => {
+        fs.unlink(dl_good, (err) => {
+            if (err) {
+                console.error(err)
+                return
+            }
+        })
+        fs.unlink(dl_bad, (err) => {
+            if (err) {
+                console.error(err)
+                return
+            }
+        })
+        resolve('done')
+    })
+    deletedFiles.then((message) => {
+        for (const value of Object.values(data['good'])) {
+            fs.appendFileSync(dl_good, `${value}\n\n`, (err) => {
+                if (err) throw err;
+            })
+        }
+        for (const value of Object.values(data['bad'])) {
+            fs.appendFileSync(dl_bad, `${value}\n\n`, (err) => {
+                if (err) throw err;
+            })
         }
     })
-    fs.unlink(dl_bad, (err) => {
-        if (err) {
-            console.error(err)
-            return
-        }
-    })
-    for (const [key, value] of Object.entries(data['good'])){
-        fs.appendFileSync(dl_good, `${value}\n\n`, (err) =>{
-            if(err) throw err;
-        })
-    }
-    for (const [key, value] of Object.entries(data['bad'])){
-        fs.appendFileSync(dl_bad, `${value}\n\n`, (err) =>{
-            if(err) throw err;
-        })
-    }
-    // fs.readFile(path.join(__dirname, '../output.json'), 'utf8', (err, data) => {
-    //     if (err) {
-    //         console.error(err)
-    //         return
-    //     }
-    //     data = JSON.parse(data)
-    //     let downloads = path.join(data["dl_path"], 'good.txt')
-    //     fs.unlink(downloads, (err)=>{
-    //         if (err){
-    //             console.error(err)
-    //             return
-    //         }
-    //     })
-    //     for (let mission of data["good"]) {
-    //         fs.appendFile(downloads, mission, (err) => {
-    //             if (err) throw err;
-    //             console.log('The file has been saved!');
-    //         })
-    //     }
-    // })
-
     console.log('files are done...')
     dl_links.style.display = 'block'
 })
