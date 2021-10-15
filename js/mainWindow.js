@@ -3,10 +3,13 @@ const { ipcRenderer } = electron;
 const form = document.getElementById('form')
 const mission_quality = document.getElementById('mission_quality')
 const checkMissionBtn = document.getElementById('checkMissionBtn')
+const path = require('path')
+const configFile = path.join(__dirname, '../configs/pos_config.json')
+
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
-    let form_content = document.getElementById('form_content').value
+    let form_content = document.getElementById('form_content').value + `,${configFile}`
     // modify page to show check in progress
     checkMissionBtn.classList.remove('btn-primary')
     checkMissionBtn.classList.add('btn-secondary')

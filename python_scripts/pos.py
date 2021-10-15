@@ -12,6 +12,7 @@ from spellchecker import SpellChecker
 
 sent = input()
 
+sent, path = sent.split(',')
 
 def expand_contractions(sentence: str) -> str:
     return ' '.join(contractions.fix(word) for word in sentence.split())
@@ -37,7 +38,7 @@ def make_i_upper(sentence):
 def check_sentence(sentence):
     """"""
     # Get config settings
-    with open('./configs/pos_config.json', 'r') as config_file:
+    with open(path, 'r') as config_file:
         config = json.load(config_file)
     nouns: list = set(config['nouns'])
     verbs: list = set(config['verbs'])

@@ -4,18 +4,49 @@
   "description": "",
   "main": "js/main.js",
   "scripts": {
-    "start": "electron .",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=false --out=release-builds",
-    "package-win": "electron-packager . mission_checker --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/windows/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Mission Checker\"",
-    "package-linux": "electron-packager . mission_checker --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/linux/icon.png --prune=true --out=release-builds"
+    "start": "electron-forge start",
+    "make": "electron-forge make"
   },
   "author": "Ed",
   "license": "MIT",
   "dependencies": {
-    "electron": "^15.1.2",
+    "electron-squirrel-startup": "^1.0.0",
+    "fs": "*",
     "python-shell": "^3.0.0"
   },
   "devDependencies": {
-    "electron-packager": "^15.4.0"
+    "@electron-forge/cli": "^6.0.0-beta.61",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+    "@electron-forge/maker-zip": "^6.0.0-beta.61",
+    "electron": "^15.1.2"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {"icon": "/Users/Ed/Documents/gitcode/POS_Electron/assets/icons/mac/icon.icns"},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "mission_checker"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

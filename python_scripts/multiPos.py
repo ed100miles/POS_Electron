@@ -3,20 +3,15 @@ from nltk.corpus import wordnet as wn
 import contractions
 import json
 from spellchecker import SpellChecker
+from pathlib import Path
 
+path_to_missions, config_path = input().split(',')
 
-# nltk.download('stopwords')
-# nltk.download('wordnet')
-# nltk.download('punkt')
-# nltk.download('averaged_perceptron_tagger')
+# out_folder = '/User/Ed/Downloads/'
+out_folder= str(Path.home() / "Downloads")
 
-
-path_to_missions = input()
-out_folder = ''
-
-
-good_missions = []
-bad_missions = []
+good_missions = {}
+bad_missions = {}
 
 
 def expand_contractions(sentence):
@@ -43,7 +38,7 @@ def make_i_upper(sentence):
 def check_sentence(sentence):
     """"""
     # Get config settings
-    with open('./configs/pos_config.json', 'r') as config_file:
+    with open(config_path, 'r') as config_file:
         config = json.load(config_file)
     nouns: list = set(config['nouns'])
     verbs: list = set(config['verbs'])
@@ -80,26 +75,25 @@ def check_sentence(sentence):
     if (len(nouns & set(pos_list)) > 0 and
             (len(verbs & set(pos_list)) > 0) or noun_could_be_verb):
         if save_pos_tags:
-            good_missions.append(f'{sentence}\n{pos_tagged}\n\n')
+            good_missions[str((len(good_missions)+1))] = f'{sentence}-->{pos_tagged}'
+            # good_missions.append(f'{sentence}\n{pos_tagged}\n\n')
         else:
-            good_missions.append(f'{sentence}\n\n')
+            good_missions[str((len(good_missions)+1))] = f'{sentence}'
     else:
         if save_pos_tags:
-            bad_missions.append(f'{sentence}\n{pos_tagged}\n\n')
+            bad_missions[str((len(bad_missions)+1))] = f'{sentence}-->{pos_tagged}'
         else:
-            bad_missions.append(f'{sentence}\n\n')
+            bad_missions[str((len(bad_missions)+1))] = f'{sentence}'
+
 
 # read input and write results to file
 with open(path_to_missions, 'r') as in_file:
     for line in in_file.readlines():
         check_sentence(line)
 
-with open(f'{out_folder}good.txt', 'w') as good_out:
-    for line in good_missions:
-        good_out.write(line)
+out_dict = json.dumps({"good":good_missions, "bad":bad_missions, "dl_path": str(Path.home() / "Downloads")})
 
-with open(f'{out_folder}bad.txt', 'w') as bad_out:
-    for line in bad_missions:
-        bad_out.write(line)
+# with open('./output.json', 'w') as out_file:
+#     json.dump(out_dict, out_file)
 
-print('All done.')
+print(out_dict)

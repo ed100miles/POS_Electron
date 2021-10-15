@@ -103,12 +103,11 @@ ipcMain.on('formContent', function (e, formContent) {
 ipcMain.on('file', function (e, file) {
   console.log(file)
   let pyshell = new PythonShell(
-    path.join(__dirname, './python_scripts/multiPos.py'),
-    { pythonPath: path.join(__dirname, './venv/bin/python3') })
+    path.join(__dirname, '../python_scripts/multiPos.py'),
+    { pythonPath: path.join(__dirname, '../venv/bin/python3') })
   pyshell.send(file)
   pyshell.on('message', function (message) {
-    console.log(message)
-    multiWindow.webContents.send('files_done')
+    multiWindow.webContents.send('files_done', message)
   })
   pyshell.end(function (err, code, signal) {
     if (err) throw err;
