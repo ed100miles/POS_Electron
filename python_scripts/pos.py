@@ -7,8 +7,8 @@ from spellchecker import SpellChecker
 
 sent = input()
 
-sent, path = sent.split(',')
-
+if len(sent.split(',')) > 1:
+    sent, path = sent.split(',')
 
 def expand_contractions(sentence: str) -> str:
     return ' '.join(contractions.fix(word) for word in sentence.split())
