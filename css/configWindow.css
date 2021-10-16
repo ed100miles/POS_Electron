@@ -1,13 +1,14 @@
 body {
     background-image: url('../assets/images/metal.jpg');
     background-size: cover;
-    color: antiquewhite;
+    color: rgb(218, 218, 218);
+    font-family: 'Roboto Mono', monospace;
 }
 h1 {
     padding-top: 5vh;
     padding-bottom: 5vh;
     text-align: center;
-    color: antiquewhite;
+    color: rgb(218, 218, 218);
 }
 #config-form {
     padding-left: 5vw;
