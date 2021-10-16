@@ -1,8 +1,8 @@
 body {
-    background-image: url('../assets/images/metal.jpg');
+    background-image: url("../assets/images/metal.jpg");
     background-size: cover;
     color: rgb(218, 218, 218);
-    font-family: 'Roboto Mono', monospace;
+    font-family: "Roboto Mono", monospace;
 }
 h1 {
     padding-top: 5vh;
@@ -10,15 +10,37 @@ h1 {
     text-align: center;
     color: rgb(218, 218, 218);
 }
-#container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-}
 #form {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    padding-left: 15vmin;
+}
+#dl_complete {
+    color: rgb(50, 251, 50);
+    padding-top: 10vmin;
+    padding-right: 10vw;
+    padding-left: 10vw;
+    text-align: center;
+}
+#btn-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5vmin;
+}
+#checkBtn {
+    display: none;
+}
+#open-good {
+    color: rgb(22, 117, 22);
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+}
+#open-bad {
+    color: red;
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
 }

@@ -5,21 +5,17 @@ import contractions
 import json
 from spellchecker import SpellChecker
 
-# nltk.download('stopwords')
-# nltk.download('wordnet')
-# nltk.download('punkt')
-# nltk.download('averaged_perceptron_tagger')
-
 sent = input()
 
 sent, path = sent.split(',')
+
 
 def expand_contractions(sentence: str) -> str:
     return ' '.join(contractions.fix(word) for word in sentence.split())
 
 
-def correct_spelling(sentence:str) -> str:
-    spell:object = SpellChecker()
+def correct_spelling(sentence: str) -> str:
+    spell: object = SpellChecker()
     return ' '.join(spell.correction(word) for word in sentence.split())
 
 
@@ -78,7 +74,6 @@ def check_sentence(sentence):
         print('Good Mission!')
     else:
         print('Bad Mission')
-    # print(pos_tagged)
 
 
 check_sentence(sent)

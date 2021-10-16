@@ -1,1 +1,33 @@
-{"nouns":["NN","NNS","NNP","NNPS"],"verbs":["VB","VBG","VBD","VBN","VBP","VBZ"],"ambig_nouns":false,"save_pos_tags":true,"ignore_words":["are","is"],"spell_check":true,"capitalize_i":true,"expand_contractions":true}
+{
+    "nouns": [
+        "NN",
+        "NNS",
+        "NNP",
+        "NNPS"
+    ],
+    "verbs": [
+        "VB",
+        "VBG",
+        "VBD",
+        "VBN",
+        "VBP",
+        "VBZ"
+    ],
+    "ambig_nouns": false,
+    "save_pos_tags": true,
+    "ignore_words": [
+        "am",
+        "are",
+        "being",
+        "been",
+        "be",
+        "seem",
+        "stay",
+        "was",
+        "were",
+        "is"
+    ],
+    "spell_check": true,
+    "capitalize_i": true,
+    "expand_contractions": true
+}

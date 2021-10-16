@@ -19,20 +19,20 @@
     </div>
     <div id='container'>
         <br>
-        <div>
-            <form id='form'>
-                <input type="file" id='upload_file' name='upload_file'>
-                <button type="submit" class="btn btn-primary">Check Missions</button>
-            </form>
+        <form id='form'>
+            <input type="file" id='upload_file' name='upload_file'>
+        </form>
+        <div id='btn-div'>
+            <button type="submit" form='form' class="btn btn-primary" id='checkBtn'>Check Missions</button>
         </div>
-        <br><br>
-        <div id='dl_links' style="display: none;">
-            <a href="file:///good.txt" class="btn btn-success" download>Download Good Missions</a>
-            <a href="file:///bad.txt" class="btn btn-danger" download>Download Bad Missions</a>
-        </div>
+        <h2 id='dl_complete' style="display: none;">
+            <a id='open-good'>Good</a>
+            and
+            <a id='open-bad'>Bad</a>
+            mission .txt files saved in Downloads folder.
+        </h2>
     </div>
     <script src="../js/multiWindow.js"></script>
 </body>
 
 </html>
-
