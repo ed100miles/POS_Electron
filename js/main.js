@@ -144,7 +144,14 @@ const mainMenuTemplate = [
         }
       },
       {
-        label: 'Quit',
+        label:'Close Window',
+        accelerator: process.platform == 'darwin' ? 'Command+W' : 'Ctrl+W',
+        click(item, focusedWindow){
+          focusedWindow.close()
+        }
+      },
+      {
+        label: 'Quit App',
         accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
         click() {
           app.quit();

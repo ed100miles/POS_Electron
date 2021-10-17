@@ -25,6 +25,9 @@ uploadFile.addEventListener('change', () => {
 form.addEventListener('submit', (e) => {
     e.preventDefault()
     dlComplete.style.display = 'none'
+    checkBtn.classList.remove('btn-primary')
+    checkBtn.classList.add('btn-secondary')
+    checkBtn.innerHTML = 'checking...'
     const file = uploadFile.files[0].path + `,${configFile}`
     console.log(file)
     ipcRenderer.send('file', file)
@@ -62,6 +65,9 @@ ipcRenderer.on('files_done', (_, data) => {
         })
     }
     uploadFile.value = ''
+    checkBtn.classList.remove('btn-secondary')
+    checkBtn.classList.add('btn-primary')
+    checkBtn.innerHTML = 'Check Missions'
     checkBtn.style.display = 'none'
     console.log('files are done...')
     dlComplete.style.display = 'block'
